@@ -15,7 +15,6 @@ import weka.core.Instances;
  
 public class SimpleWeka {
 	private static DecimalFormat df = new DecimalFormat("0.00"); 
-	
 	public static BufferedReader readDataFile(String filename) {
 	
 		BufferedReader inputReader = null;
@@ -34,6 +33,7 @@ public class SimpleWeka {
 		model.buildClassifier(dataSet);
 
 		evaluation.evaluateModel(model, dataSet);
+
 		System.out.println( evaluation.toSummaryString("\nResults:\n", true) );
 		
 		return evaluation;

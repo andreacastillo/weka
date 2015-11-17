@@ -10,11 +10,11 @@ public class Perceptron extends Classifier implements weka.core.OptionHandler {
 
 	double learningRate;
 	String fileName;
-	int numInstances = 0, EPOCH = 0, counter = 0, bias = 1;
+	int  EPOCH = 0, counter = 0;
+	double bias = 1.0, predicted, numInstances;
 	Instances data;
-	double weights[] = new double[3];
-	double x[], y[];
-	int actual[];
+	double x[], y[], actual[], weights[] = new double[3];;
+
 	boolean classified;
 
 	@Override
@@ -26,16 +26,13 @@ public class Perceptron extends Classifier implements weka.core.OptionHandler {
 		weights[2] = 0.5;
 		x = new double[data.numInstances()];
 		y = new double[data.numInstances()];
-		actual = new int[data.numInstances()];
+		actual = new double[data.numInstances()];
 		char tempChar;
 		double sum;
-		int predicted, i, j;
+		int  i, j;
 
 		for (i = 0; i < EPOCH; i++) {
-			System.out.println();
 			String currentInstance[] = new String[3];
-			System.out.print("Iteration: " + i + " ");
-
 			for (j = 0; j < data.numInstances(); j++) {
 				currentInstance = data.instance(j).toString().split(",");
 				x[j] = Double.parseDouble(currentInstance[0]);
@@ -45,26 +42,46 @@ public class Perceptron extends Classifier implements weka.core.OptionHandler {
 					actual[j] = 1;
 				if (tempChar == 'b')
 					actual[j] = -1;
+			}
+		}
+		for (j = 0; j < EPOCH; j++) {
+			System.out.println(j + " x " + x[j] + " y  " + y[j] + " z " + actual[j]);
 
+		}
+		for (i = 0; i < EPOCH; i++) {
+			System.out.println();
+			System.out.print("Iteration: " + i + " ");
+			for (j = 0; j < EPOCH; j++) {
 				classified = false;
-				sum = weights[0] * bias + weights[1] * x[j] + weights[2] * y[j];
+	
+				weights[0]=(Math.round(weights[0] * 100.0) / 100.0);
+				weights[1]=(Math.round(weights[1] * 100.0) / 100.0);
+				weights[2]=(Math.round(weights[2] * 100.0) / 100.0);
+
+				sum = (weights[0] * bias) + (weights[1] * x[j]) + (weights[2] * y[j]);
 				predicted = sum >= 0 ? 1 : -1;
-				if (actual[j] == 1 && predicted == -1) {
-					// System.out.println("actual[j] == -1 && predicted == 1");
+				if (actual[j] == 1.0 && predicted == -1.0) {
 					weights[0] = weights[0] + (2 * learningRate * bias);
 					weights[1] = weights[1] + (2 * learningRate * x[j]);
 					weights[2] = weights[2] + (2 * learningRate * y[j]);
-				} else if (actual[j] == -1 && predicted == 1) {
+				} 
+				if (actual[j] == -1.0 && predicted == 1.0) {
 					weights[0] = weights[0] - (2 * learningRate * bias);
 					weights[1] = weights[1] - (2 * learningRate * x[j]);
 					weights[2] = weights[2] - (2 * learningRate * y[j]);
-					// System.out.println("actual[j] == 1 && predicted == -1
-				} else if (actual[j] == predicted) {
+				} 
+				if (actual[j] == predicted)
 					classified = true;
-				}
-				distributionForInstance(data.instance(j));
+
+				if (classified)
+					System.out.printf("1");
+				else
+					System.out.printf("0");
+
 			}
+
 		}
+		System.out.println();
 
 	}
 
@@ -91,6 +108,7 @@ public class Perceptron extends Classifier implements weka.core.OptionHandler {
 	}
 
 	public String toString() {
+		
 		return " weight " + " " + weights[0] + " " + weights[1] + " " + weights[2];
 		// return "Source file :" + fileName + "\n Learning rate: " +
 		// learningRate + "\n Total # weight updates = "
