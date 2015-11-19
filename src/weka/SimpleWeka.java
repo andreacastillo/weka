@@ -31,7 +31,6 @@ public class SimpleWeka {
 		
 		Evaluation evaluation = new Evaluation(dataSet);
 		model.buildClassifier(dataSet);
-
 		evaluation.evaluateModel(model, dataSet);
 
 		System.out.println( evaluation.toSummaryString("\nResults:\n", true) );
@@ -54,26 +53,26 @@ public class SimpleWeka {
 	public static void main(String[] args) throws Exception {
 		
 		// Load data file of instances
-		BufferedReader datafile = readDataFile("simple.arff");//readDataFile(args[0]);
+		BufferedReader datafile = readDataFile(args[0]);//readDataFile(args[0]);
 		Instances data = new Instances(datafile);
 		data.setClassIndex(data.numAttributes() - 1);
 
 		// Choose your custom perceptron classifier
 		Classifier model = new Perceptron();
-		
 		// Set the classifier options
 		String[] options = new String[6];
 		options[0] = "-F";
-		options[1] = "simple.arff";//args[0];
+		options[1] = args[0];
 		options[2] = "-I";
-		options[3] = "10";//args[1];
+		options[3] = args[1];
 		options[4] = "-L";
-		options[5] = "0.2";//args[2];
+		options[5] = args[2];
 		model.setOptions(options);
-				
+
 		// Run classifier and report results
 		FastVector predictions = new FastVector();
 		Evaluation validation = classify(model, data);
+
 		predictions.appendElements(validation.predictions());
 
 		// Final score
