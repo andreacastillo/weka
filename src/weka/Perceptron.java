@@ -29,11 +29,9 @@ public class Perceptron extends Classifier implements weka.core.OptionHandler {
 		weights = new double[data.numAttributes()];
 		values = new int[EPOCH];
 		for(int i = 0; i < weights.length; i++){
-			weights[i] = (Math.random()*2 - 1);
+			weights[i] = Math.random();
 		}
-		weights[2] = .75;
-		weights[1] = .5;
-		weights[0] = -.6;
+
 		for(int i = 0; i < EPOCH; i++){
 			values[i] = 1;
 		}
@@ -53,15 +51,12 @@ public class Perceptron extends Classifier implements weka.core.OptionHandler {
 				if (predicted == actual) {
 					classified = true;
 					System.out.printf("1");
-					if(i == EPOCH){
-						values[j] = 1;
-					}
+					
 				} else {
 					classified = false;
 					System.out.printf("0");
-					if(i == EPOCH){
-						values[j] = 0;
-					}
+						values[i] = 0;
+					
 					// added actual to the equation. it changes the plus or
 					// minus
 					for (int m = 0; m < weights.length; m++) {
