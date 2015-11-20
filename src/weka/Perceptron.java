@@ -23,6 +23,9 @@ public class Perceptron extends Classifier implements weka.core.OptionHandler {
 		double sum = 0;
 		int x = 0;
 		weights = new double[data.numAttributes()];
+		for(int i = 0; i < weights.length; i++){
+			weights[i] = Math.random()*2 - 1;
+		}
 		weights[2] = .5;
 		weights[1] = .75;
 		weights[0] = -.6;
@@ -40,7 +43,6 @@ public class Perceptron extends Classifier implements weka.core.OptionHandler {
 						sum += (weights[x] * data.instance(j).value(x - 1));
 				}
 				// A is 0 B is 1 I am changing it to A is 1 and B is -1
-
 				actual = data.instance(j).value(x - 1) == 0.0 ? 1.0 : -1.0;
 				predicted = sum >= 0.0 ? 1.0 : -1.0;
 
