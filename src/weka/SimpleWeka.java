@@ -1,16 +1,15 @@
 package weka;
 
-import weka.Perceptron;
-
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.text.DecimalFormat;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.evaluation.NominalPrediction;
-import weka.core.FastVector; 
+import weka.core.FastVector;
 import weka.core.Instances;
  
 public class SimpleWeka {
