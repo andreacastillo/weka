@@ -13,11 +13,13 @@ public class Perceptron extends Classifier implements weka.core.OptionHandler {
 
 	private static final long serialVersionUID = 1L;
 	String fileName;
-	int EPOCH = 0;
+	int EPOCH = 0, index = 0;
 	double bias = 1.0, actual, predicted, learningRate;
 	Instances data;
 	boolean classified;
 	double[] weights;
+	int[] values;
+	
 
 	@Override
 	public void buildClassifier(Instances data) throws Exception {
@@ -25,8 +27,15 @@ public class Perceptron extends Classifier implements weka.core.OptionHandler {
 		double sum = 0;
 		int x = 0;
 		weights = new double[data.numAttributes()];
+		values = new int[EPOCH];
 		for(int i = 0; i < weights.length; i++){
-			weights[i] = Math.random()*2 - 1;
+			weights[i] = (Math.random()*2 - 1);
+		}
+//		weights[2] = .75;
+//		weights[1] = .5;
+//		weights[0] = -.6;
+		for(int i = 0; i < EPOCH; i++){
+			values[i] = 1;
 		}
 		for (int i = 0; i < EPOCH; i++) {
 			System.out.print("Iteration " + i + ": ");
@@ -47,6 +56,7 @@ public class Perceptron extends Classifier implements weka.core.OptionHandler {
 				} else {
 					classified = false;
 					System.out.printf("0");
+					values[i] = -1;
 					// added actual to the equation. it changes the plus or
 					// minus
 					for (int m = 0; m < weights.length; m++) {
@@ -66,14 +76,19 @@ public class Perceptron extends Classifier implements weka.core.OptionHandler {
 	}
 
 	public double[] distributionForInstance(Instance instance) {
+//		System.out.println("in distributionForInstance");
+		System.out.print(values[index] +" ");
 		double[] result = new double[2];
-		if (classified) {
+		if (values[index] == 1) {
 			result[0] = 1;
 			result[1] = 0;
 		} else {
 			result[0] = 0;
 			result[1] = 1;
 		}
+		index++;
+		if(index == EPOCH)
+			System.out.println();
 		return result;
 
 	}
