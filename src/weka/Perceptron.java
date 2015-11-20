@@ -29,6 +29,7 @@ public class Perceptron extends Classifier implements weka.core.OptionHandler {
 		System.out.println(data.numAttributes() + " " + data.numInstances());
 		System.out.println(" Argruments  epoch learning rate " + EPOCH + " " + learningRate);
 		for (int i = 0; i < EPOCH; i++) {
+			System.out.print("Iteration " + i +": ");
 			for (int j = 0; j < data.numInstances(); j++) {
 				for (x = 0; x < data.numAttributes(); x++) {
 					// System.out.print(data.instance(j).value(x) + " ");
@@ -48,22 +49,13 @@ public class Perceptron extends Classifier implements weka.core.OptionHandler {
 				} else {
 					classified=false;
 					System.out.printf("0");
-					if (actual == 1.0 && predicted == -1.0) {
+// added actual to the equation. it changes the plus or minus
 						for (int m = 0; m < weights.length; m++) {
 							if (m == 0)
-								weights[0] = weights[0] + (2 * learningRate * bias);
+								weights[0] = weights[0] + (actual * 2 * learningRate * bias);
 							else
-								weights[m] = weights[m] + (2 * learningRate * data.instance(j).value(m - 1));
+								weights[m] = weights[m] + (actual * 2 * learningRate * data.instance(j).value(m - 1));
 						}
-					}
-					if (actual == -1.0 && predicted == 1.0) {
-						for (int m = 0; m < weights.length; m++) {
-							if (m == 0)
-								weights[0] = weights[0] + (-2 * learningRate * bias);
-							else
-								weights[m] = weights[m] + (-2 * learningRate * data.instance(j).value(m - 1));
-						}
-					}
 				}
 			}
 			System.out.println();
