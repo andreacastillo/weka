@@ -1,8 +1,10 @@
 package weka;
 
 //Andrea Castillo
+//Kevin Anderson
+//COP 4630
+//Program 3
 import java.io.IOException;
-
 import weka.classifiers.Classifier;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -26,17 +28,10 @@ public class Perceptron extends Classifier implements weka.core.OptionHandler {
 		for(int i = 0; i < weights.length; i++){
 			weights[i] = Math.random()*2 - 1;
 		}
-		weights[2] = .5;
-		weights[1] = .75;
-		weights[0] = -.6;
-		System.out.println(data.numAttributes() + " " + data.numInstances());
-		System.out.println(" Argruments  epoch learning rate " + EPOCH + " "
-				+ learningRate);
 		for (int i = 0; i < EPOCH; i++) {
 			System.out.print("Iteration " + i + ": ");
 			for (int j = 0; j < data.numInstances(); j++) {
 				for (x = 0; x < data.numAttributes(); x++) {
-					// System.out.print(data.instance(j).value(x) + " ");
 					if (x == 0)
 						sum = (weights[0] * bias);
 					else
