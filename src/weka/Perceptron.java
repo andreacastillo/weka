@@ -75,22 +75,37 @@ public class Perceptron extends Classifier implements weka.core.OptionHandler {
 		}
 	}
 
+	@Override
 	public double[] distributionForInstance(Instance instance) {
-//		System.out.println("in distributionForInstance");
-		System.out.print(values[index] +" ");
-		double[] result = new double[2];
-		if (values[index] == 1) {
-			result[0] = 1;
-			result[1] = 0;
-		} else {
-			result[0] = 0;
-			result[1] = 1;
+		double[] out = new double[2];
+		double sum = 0.0;
+		for (int j = 0; j < weights.length; j++) {
+			if (j == 0)
+				sum += weights[j] * 1.0;
+			else
+				sum += weights[j] * instance.value(j - 1);
 		}
-		index++;
-		if(index == EPOCH)
-			System.out.println();
-		return result;
-
+		double actual = instance.value(instance.numAttributes() - 1);
+		if (instance.attribute(instance.numAttributes() - 1).isNumeric()) {
+			if (instance.value(instance.numAttributes() - 1) > 0)
+				actual = 1.0;
+			else
+				actual = 0.0;
+		} else {
+			actual = instance.value(instance.numAttributes() - 1);
+			if (actual == 1.0)
+				actual = 0.0;
+			else
+				actual = 1.0;
+		}
+		if ((sum >= 0 && actual == 0.0) || (sum < 0 && actual == 1.0)) {
+			out[0] = 0;
+			out[1] = 1;
+		} else {
+			out[0] = 1;
+			out[1] = 0;
+		}
+		return out;
 	}
 
 	public void setOptions(String[] options) throws IOException, Exception {
